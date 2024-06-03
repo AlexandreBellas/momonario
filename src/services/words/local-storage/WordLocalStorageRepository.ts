@@ -1,3 +1,4 @@
+import slugify from 'slugify'
 import {
   IWordGateway,
   IWordGatewaySaveRequest,
@@ -10,7 +11,13 @@ export class WordLocalStorageRepository implements IWordGateway {
   async save(
     request: IWordGatewaySaveRequest
   ): Promise<IWordGatewaySaveResponse> {
-    localStorage.setItem(request.word, request.meaning)
+    localStorage.setItem(
+      slugify(request.word, {
+        lower: true,
+        trim: true,
+      }),
+      request.meaning
+    )
 
     return { isSuccessful: true }
   }
@@ -18,7 +25,12 @@ export class WordLocalStorageRepository implements IWordGateway {
   async search(
     request: IWordGatewaySearchRequest
   ): Promise<IWordGatewaySearchResponse> {
-    const meaning = localStorage.getItem(request.word)
+    const meaning = localStorage.getItem(
+      slugify(request.word, {
+        lower: true,
+        trim: true,
+      })
+    )
 
     return { meaning }
   }
