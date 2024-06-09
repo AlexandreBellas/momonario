@@ -8,8 +8,8 @@ Under development.
 ## Next steps
 
 - [x] Add simple functionality of adding/saving word and meaning
-- [ ] Add search engine (instead of insta-searching)
+- [x] Add downloadable data to import on other devices (as Excalidraw)
 - [ ] Add categories
 - [ ] Add search by category
-- [ ] Add downloadable data to import on other devices (as Excalidraw)
+- [ ] Add search engine (instead of insta-searching)
 - [ ] Add login and saving words on the cloud
