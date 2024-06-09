@@ -1,6 +1,7 @@
 import { useWord, useWordDispatch } from '@/hooks/useWord'
 import { useWordService } from '@/hooks/useWordService'
 import { useCallback, useEffect, useState } from 'react'
+import { BrowserView } from 'react-device-detect'
 
 export default function TextAreaSearchWord() {
   // #region Contexts
@@ -16,10 +17,21 @@ export default function TextAreaSearchWord() {
   // #region Callbacks
   const saveMeaningForCurrentWord = useCallback(() => {
     if (!word) return
+    if (meaningState === undefined) return
 
     wordDispatch({ type: 'set-meaning', meaning: meaningState })
-    wordService.save({ word, meaning: meaningState })
-    alert('Saved!')
+    wordService
+      .save({
+        word,
+        definition: { meaning: meaningState, labels: [] },
+      })
+      .then((saveResponse) => {
+        if (saveResponse.isSuccessful) {
+          alert('Saved!')
+        } else {
+          alert('Could not save the word.')
+        }
+      })
   }, [word, wordService, wordDispatch, meaningState])
   // #endregion
 
@@ -34,8 +46,8 @@ export default function TextAreaSearchWord() {
   useEffect(() => {
     if (word === undefined) return
 
-    wordService.search({ word }).then((searchResult) => {
-      setMeaningState(searchResult.meaning ?? '')
+    wordService.find({ word }).then((findResult) => {
+      setMeaningState(findResult.definition?.meaning ?? '')
     })
   }, [word, wordService])
 
@@ -59,28 +71,34 @@ export default function TextAreaSearchWord() {
   // #endregion
 
   return (
-    <div className="h-[50vh] flex bg-gray-400 justify-center">
-      <div className="container mx-4 flex-1 flex flex-col mb-12 h-48">
+    <div className="flex h-[50vh] justify-center bg-gray-400">
+      <div className="container mx-4 mb-12 flex h-48 flex-1 flex-col">
         <div className="flex justify-end">
           <div className="relative">
+            <BrowserView>
+              <button
+                onClick={() => {
+                  saveMeaningForCurrentWord()
+                }}
+                className="absolute bottom-0 top-0 w-full opacity-0 transition-all hover:mt-[-5rem] hover:opacity-100"
+              >
+                <p className="rounded-lg bg-slate-500/50 text-center">
+                  or Ctrl+S
+                </p>
+              </button>
+            </BrowserView>
             <button
+              className="rounded-lg bg-gray-700 px-4 py-3 text-slate-100 shadow-md hover:bg-gray-700/75"
               onClick={() => {
-                if (meaningState === undefined) return
                 saveMeaningForCurrentWord()
               }}
-              className="absolute top-0 bottom-0 w-full opacity-0 hover:opacity-100 hover:mt-[-5rem] transition-all"
             >
-              <p className="text-center bg-slate-500/50 rounded-lg">
-                or Ctrl+S
-              </p>
-            </button>
-            <div className="bg-gray-700 hover:bg-gray-700/75 text-slate-100 rounded-lg px-4 py-3 shadow-md">
               Save ✅
-            </div>
+            </button>
           </div>
         </div>
         <textarea
-          className="flex-1 bg-transparent p-4 focus:outline-none bg-white shadow-md rounded-lg mt-2"
+          className="mt-2 flex-1 rounded-lg bg-transparent bg-white p-4 shadow-md focus:outline-none"
           placeholder="Meaning or description"
           value={meaningState}
           onChange={(ev) => {

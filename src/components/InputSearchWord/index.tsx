@@ -1,13 +1,12 @@
-import { useWordDispatch } from '@/hooks/useWord'
+import { useWord, useWordDispatch } from '@/hooks/useWord'
 import { useCallback } from 'react'
+import ButtonExportDictionary from '../ButtonExportDictionary'
+import ButtonImportDictionary from '../ButtonImportDictionary'
 
 export default function InputSearchWord() {
   // #region Contexts
+  const { word } = useWord()
   const wordDispatch = useWordDispatch()
-  // #endregion
-
-  // #region State
-
   // #endregion
 
   // #region Callbacks
@@ -15,18 +14,25 @@ export default function InputSearchWord() {
     (search: string) => {
       wordDispatch({ type: 'set-word', word: search })
     },
-    [wordDispatch]
+    [wordDispatch],
   )
   // #endregion
 
   return (
-    <div className="h-[50vh] justify-center items-center bg-gradient-to-b from-gray-200 to-gray-400 flex">
-      <div className="rounded-full flex h-16 md:h-12 py-4 px-5 bg-white shadow-md">
-        <input
-          className="flex-1 w-[40vw] bg-transparent focus:outline-none"
-          placeholder="Type to add or search..."
-          onChange={(ev) => onChangeWord(ev.target.value)}
-        />
+    <div className="flex h-[50vh] flex-col items-center justify-center bg-gradient-to-b from-gray-200 to-gray-400">
+      <div className="container flex justify-end">
+        <ButtonImportDictionary />
+        <ButtonExportDictionary />
+      </div>
+      <div className="flex flex-1 items-center justify-center">
+        <div className="flex h-16 rounded-full bg-white px-5 py-4 shadow-md md:h-12">
+          <input
+            className="w-[40vw] flex-1 bg-transparent focus:outline-none"
+            placeholder="Type to add or search..."
+            value={word ?? ''}
+            onChange={(ev) => onChangeWord(ev.target.value)}
+          />
+        </div>
       </div>
     </div>
   )

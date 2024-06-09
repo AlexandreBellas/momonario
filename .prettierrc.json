@@ -1,4 +1,9 @@
 {
     "semi": false,
-    "singleQuote": true
+    "trailingComma": "all",
+    "singleQuote": true,
+    "plugins": [
+        "prettier-plugin-tailwindcss"
+    ],
+    "tailwindConfig": "./tailwind.config.ts"
 }

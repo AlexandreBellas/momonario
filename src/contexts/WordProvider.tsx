@@ -19,12 +19,15 @@ type IWordContextAction =
       type: 'set-meaning'
       meaning: string
     }
+  | {
+      type: 'clear'
+    }
 // #endregion
 
 // #region Context definitions
 export const WordContext = createContext({} as IWordContextState)
 export const WordContextDispatch = createContext(
-  {} as React.Dispatch<IWordContextAction>
+  {} as React.Dispatch<IWordContextAction>,
 )
 // #endregion
 
@@ -46,7 +49,7 @@ export function WordProvider({ children }: Readonly<IWordProviderProps>) {
 // #region Reducer definitions
 function wordReducer(
   state: IWordContextState,
-  action: IWordContextAction
+  action: IWordContextAction,
 ): IWordContextState {
   switch (action.type) {
     case 'set-word': {
@@ -59,6 +62,13 @@ function wordReducer(
       return {
         ...state,
         meaning: action.meaning,
+      }
+    }
+    case 'clear': {
+      return {
+        ...state,
+        word: undefined,
+        meaning: undefined,
       }
     }
     default: {

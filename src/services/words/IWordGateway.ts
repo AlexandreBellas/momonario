@@ -1,23 +1,55 @@
-export interface IWordGatewaySearchRequest {
-  word: string;
+export interface IWordDefinition {
+  meaning: string
+  labels: string[]
 }
 
-export interface IWordGatewaySearchResponse {
-  meaning?: string | null;
+export interface IWords {
+  [word: string]: IWordDefinition | undefined
+}
+
+export interface IExportData {
+  words: IWords
+}
+
+export interface IWordGatewayFindRequest {
+  word: string
+}
+
+export interface IWordGatewayFindResponse {
+  definition?: IWordDefinition | null
 }
 
 export interface IWordGatewaySaveRequest {
-  word: string;
-  meaning: string;
+  word: string
+  definition: IWordDefinition
 }
 
 export interface IWordGatewaySaveResponse {
-  isSuccessful: boolean;
+  isSuccessful: boolean
 }
 
+export interface IWordGatewayExportResponse {
+  data: string
+}
+
+export interface IWordGatewayImportRequest {
+  data: string
+}
+
+export type IWordGatewayImportResponse =
+  | {
+      isSuccessful: true
+    }
+  | {
+      isSuccessful: false
+      message: string
+    }
+
 export interface IWordGateway {
-  search: (
-    request: IWordGatewaySearchRequest
-  ) => Promise<IWordGatewaySearchResponse>;
-  save: (request: IWordGatewaySaveRequest) => Promise<IWordGatewaySaveResponse>;
+  find: (request: IWordGatewayFindRequest) => Promise<IWordGatewayFindResponse>
+  save: (request: IWordGatewaySaveRequest) => Promise<IWordGatewaySaveResponse>
+  export: () => Promise<IWordGatewayExportResponse>
+  import: (
+    request: IWordGatewayImportRequest
+  ) => Promise<IWordGatewayImportResponse>
 }
