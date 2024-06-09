@@ -20,7 +20,7 @@ export default function InputSearchWord() {
 
   return (
     <div className="flex h-[50vh] flex-col items-center justify-center bg-gradient-to-b from-gray-200 to-gray-400">
-      <div className="container flex justify-end">
+      <div className="container m-4 flex justify-end">
         <ButtonImportDictionary />
         <ButtonExportDictionary />
       </div>
