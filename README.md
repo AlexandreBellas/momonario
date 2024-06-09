@@ -3,7 +3,23 @@
 Momonario is a personal dictionary to document words being learned in a new
 language, being easy to add or to check if it has been already documented.
 
+It is being made with Typescript, NextJS, TailwindCSS, Prisma, and PostgreSQL.
+
 Under development.
+
+## How to execute
+
+Clone the repository, install the dependencies with
+
+```bash
+npm i
+```
+
+and run the project with
+
+```bash
+npm run dev
+```
 
 ## Next steps
 
